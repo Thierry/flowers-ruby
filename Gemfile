@@ -9,14 +9,15 @@ gem 'json'
 # development situations.
 group :development do
   gem 'pry'
+  gem 'shotgun'
   #gem 'dm-sqlite-adapter'
 end
 
 # Heroku uses Postgres however, so we tell the Gemfile to use Postgres
 # in production instead of SQLite.
-#group :production do
-  #gem 'dm-postgres-adapter'
-#end
+group :production do
+  gem 'unicorn'
+end
 
 gem 'dynamoid', '~> 1'
 gem 'aws-sdk', '~>2'

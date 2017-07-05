@@ -18,6 +18,10 @@ Aws.config.update({
   credentials: Aws::Credentials.new(AWS_ACCESS_KEY, AWS_SECRET_KEY),
 })
 
+before do
+	content_type 'application/json'
+end
+
 #set :show_exceptions, false
 
 error do

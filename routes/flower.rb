@@ -4,9 +4,7 @@ get '/users/:userid/flowers' do
   @user = User.find(params[:userid])
 
   raise "User not found" if @user.nil?
-  @flowers = @user.flowers
-
-  @flowers.to_json
+  @user.flowers.to_json
 end
 
 # CREATE: Route to create a new Petal
@@ -45,7 +43,7 @@ get '/flowers/:id' do
   if @flower
     @flower.to_json
   else
-    halt 404
+    raise "Error creating flower"
   end
 end
 

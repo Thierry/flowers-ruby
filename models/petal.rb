@@ -4,18 +4,17 @@ class Petal
 
   belongs_to :flower
 
-  #field :name
-  #field :class
-  #field :rank, :integer
-  #field :number, :number
-  #field :joined_at, :datetime
-  #field :hash, :serialized
-  #field :enabled, :integer
+  field :title
+  field :type # Action, notification
+  field :color, :string
+  field :description, :string
+  field :seuil, :number
+  field :split_key
+  field :execution_date
 
-end
+  has_one :watch_account, :class => Account
+  has_many :debit_account, :class => Account
+  has_many :credit_account, :class => Account
 
-class AccountPetal < Petal
-  include Dynamoid::Document
-  field :IBAN
 end
 
