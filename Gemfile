@@ -9,7 +9,6 @@ gem 'json'
 # development situations.
 group :development do
   gem 'pry'
-  gem 'awesome_print'
   #gem 'dm-sqlite-adapter'
 end
 
@@ -22,4 +21,5 @@ end
 gem 'dynamoid', '~> 1'
 gem 'aws-sdk', '~>2'
 
+gem 'awesome_print'
 
