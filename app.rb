@@ -18,3 +18,14 @@ Aws.config.update({
   credentials: Aws::Credentials.new(AWS_ACCESS_KEY, AWS_SECRET_KEY),
 })
 
+#set :show_exceptions, false
+
+error do
+  content_type :json
+  status 400 # or whatever
+
+  e = env['sinatra.error']
+  {:result => 'error', :message => e.message}.to_json
+end
+
+

@@ -3,7 +3,7 @@ get '/users/:userid/flowers' do
   content_type :json
   @user = User.find(params[:userid])
 
-  halt 500 if @user.nil?
+  raise "User not found" if @user.nil?
   @flowers = @user.flowers
 
   @flowers.to_json
@@ -20,13 +20,12 @@ post '/users/:userid/flowers' do
   # If you are using jQuery's ajax functions, the data goes through in the
   # params.
   @user = User.find(params[:userid])
-
-  halt 500 if @user.nil?
+  raise "User not found" if @user.nil?
 
   begin
     @params_json = JSON.parse(request.body.read)
   rescue
-    halt 500
+    raise 'Error parsing request'
   end
   @flower = Flower.new(@params_json)
   @flower.user = @user
@@ -34,7 +33,7 @@ post '/users/:userid/flowers' do
   if @flower.save
     @flower.to_json
   else
-    halt 500
+    raise "Error creating flower object"
   end
 end
 
