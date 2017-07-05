@@ -10,3 +10,6 @@
 /coverage
 .yardoc
 local/**
+/tmp
+/var
+/log
