@@ -6,6 +6,8 @@ Bundler.require
 require 'rack/protection'
 use Rack::Protection::PathTraversal
 
+set :protection, :except => :json_csrf
+
 # Setup DataMapper with a database URL. On Heroku, ENV['DATABASE_URL'] will be
 # set, when working locally this line will fall back to using SQLite in the
 # current directory.
