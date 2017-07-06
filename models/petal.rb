@@ -1,5 +1,6 @@
 class Petal
   include Dynamoid::Document
+  include Updater
   table :name => :petals, :key => :id, :read_capacity => 5, :write_capacity => 5
 
   belongs_to :flower

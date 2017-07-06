@@ -1,5 +1,6 @@
 class User
   include Dynamoid::Document  
+  include Updater
   has_many :flowers
 
   field :name

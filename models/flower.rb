@@ -1,5 +1,6 @@
 class Flower
   include Dynamoid::Document 
+  include Updater
   table :name => :flowers, :key => :id, :read_capacity => 5, :write_capacity => 5
 
   field :label, :string
@@ -8,5 +9,5 @@ class Flower
   belongs_to :user 
   has_many :petals
   has_many :accounts
-end
 
+end

@@ -3,6 +3,17 @@ class FlowerApp < Sinatra::Base
     User.all.to_json
   end
 
+  get '/users/:id' do
+
+    @user = User.find(params[:id])
+
+    if @user
+      @user.to_json
+    else
+      raise "Unknown user"
+    end
+  end
+
   post '/users' do
     @user = User.new(params)
 
@@ -17,6 +28,18 @@ class FlowerApp < Sinatra::Base
     end
   end
 
+  put '/users/:id' do
+
+    @user = User.find(params[:id])
+    @user.update_attributes(request.params)
+
+    if @user.save
+      @user.to_json
+    else
+      raise "Error updating user"
+    end
+  end
+  #
   # Route to show all user flowers
   get '/users/:userid/flowers' do
     content_type :json
@@ -39,13 +62,11 @@ class FlowerApp < Sinatra::Base
     @user = User.find(params[:userid])
     raise "User not found" if @user.nil?
 
-    begin
-      @params_json = JSON.parse(request.body.read)
-    rescue
-      raise 'Error parsing request'
-    end
-    @flower = Flower.new(@params_json)
+    @flower = Flower.new(request.params)
     @flower.user = @user
+
+    @user.flowers << @flower
+    @user.save
 
     if @flower.save
       @flower.to_json

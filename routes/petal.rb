@@ -22,7 +22,7 @@ class FlowerApp < Sinatra::Base
     # params.
 
     @petal = Petal.find(params[:id])
-    @petal.update(params)
+    @petal.update_attributes(request.params)
 
     if @petal.save
       @petal.to_json

@@ -6,8 +6,21 @@ class FlowerApp < Sinatra::Base
     raise "Flower not found" if @flower.nil?
     @flower.to_json
   end
+  
+  # UPDATE: Route to update a Petal
+  put '/flowers/:flowerid' do
 
-  # Route to show all user flowers
+    @flower = Flower.find(params[:flowerid])
+    @flower.update_attributes(request.params)
+
+    if @flower.save
+      @flower.to_json
+    else
+      raise "Error updating flower"
+    end
+  end
+
+  # Route to show all petals for a flower
   get '/flowers/:flowerid/petals' do
     @flower = Flower.find(params[:flowerid])
 
@@ -15,7 +28,15 @@ class FlowerApp < Sinatra::Base
     @flower.petals.to_json
   end
 
-  # CREATE: Route to create a new Flower
+  # Route to show all accounts for a flower
+  get '/flowers/:flowerid/accounts' do
+    @flower = Flower.find(params[:flowerid])
+
+    raise "Flower not found" if @flower.nil?
+    @flower.accounts.to_json
+  end
+
+  # CREATE: Route to create a new petal on this flower
   post '/flowers/:flowerid/petals' do
 
     # If you are using jQuery's ajax functions, the data goes through in the
@@ -24,14 +45,13 @@ class FlowerApp < Sinatra::Base
     raise "Flower not found" if @flower.nil?
 
     begin
-      @params_json = JSON.parse(request.body.read)
+      @petal = Petal.new(request.params)
     rescue
-      raise 'Error parsing request'
+      raise "Error creating petal"
     end
-    @petal = Petal.new(@params_json)
-    @petal.flower = @flower
 
     if @petal.save
+      @petal.flower = @flower
       @flower.save
       @petal.to_json
     else
@@ -39,48 +59,41 @@ class FlowerApp < Sinatra::Base
     end
   end
 
-  # READ: Route to show a specific Flower based on its `id`
-  get '/flowers/:id' do
-    @flower = Flower.get(params[:id])
-
-    if @flower
-      @flower.to_json
-    else
-      raise "Error creating flower"
-    end
-  end
-
-  # UPDATE: Route to update a Petal
-  put '/flowers/:id' do
-
-    # These next commented lines are for if you are using Backbone.js
-    # JSON is sent in the body of the http request. We need to parse the body
-    # from a string into JSON
-    # params_json = JSON.parse(request.body.read)
+  # CREATE: Route to create a new account on this flower
+  post '/flowers/:flowerid/accounts' do
 
     # If you are using jQuery's ajax functions, the data goes through in the
     # params.
-    params.to_json
+    @flower = Flower.find(params[:flowerid])
+    raise "Flower not found" if @flower.nil?
 
-    #@flower = Flower.find(params[:id])
-    #@flower.update(params)
+    begin
+      @account = Account.new(request.params)
+    rescue
+      raise "Error creating account"
+    end
 
-    #if @flower.save
-    #  @flower.to_json
-    #else
-    #  raise "Error updating flower"
-    #end
+    if @account.save
+      @account.flower = @flower
+      #@flower.save
+      @account.to_json
+    else
+      raise "Error creating petal object"
+    end
   end
 
   # DELETE: Route to delete a Flower
-  delete '/flowers/:id' do
-    @flower = Flower.get(params[:id])
+  delete '/flowers/:flowerid' do
+    @flower = Flower.find(params[:flowerid])
 
     if @flower.nil?
       raise "Flower not found"
     end
 
     @flower.petals.each { |p| p.destroy }
+
+    @user = @flower.user
+    @user.flowers.delete(@flower)
 
     if @flower.destroy
       {:success => "ok"}.to_json
