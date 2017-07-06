@@ -5,7 +5,7 @@ class Petal
   belongs_to :flower
 
   field :title
-  field :type # Action, notification
+  field :petaltype # Action, notification
   field :color, :string
   field :description, :string
   field :seuil, :number

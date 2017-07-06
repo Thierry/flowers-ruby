@@ -1,44 +1,46 @@
-# Route to show all Petals, ordered like a blog
-get '/users/:userid/flowers' do
-  content_type :json
-  @user = User.find(params[:userid])
+# Route to show all user flowers
+get '/flowers/:flowerid' do
+  @flower = Flower.find(params[:flowerid])
 
-  raise "User not found" if @user.nil?
-  @user.flowers.to_json
+  raise "Flower not found" if @flower.nil?
+  @flower.to_json
 end
 
-# CREATE: Route to create a new Petal
-post '/users/:userid/flowers' do
+# Route to show all user flowers
+get '/flowers/:flowerid/petals' do
+  @flower = Flower.find(params[:flowerid])
 
-  # These next commented lines are for if you are using Backbone.js
-  # JSON is sent in the body of the http request. We need to parse the body
-  # from a string into JSON
-  # params_json = JSON.parse(request.body.read)
+  raise "Flower not found" if @flower.nil?
+  @flower.petals.to_json
+end
+
+# CREATE: Route to create a new Flower
+post '/flowers/:flowerid/petals' do
 
   # If you are using jQuery's ajax functions, the data goes through in the
   # params.
-  @user = User.find(params[:userid])
-  raise "User not found" if @user.nil?
+  @flower = Flower.find(params[:flowerid])
+  raise "Flower not found" if @flower.nil?
 
   begin
     @params_json = JSON.parse(request.body.read)
   rescue
     raise 'Error parsing request'
   end
-  @flower = Flower.new(@params_json)
-  @flower.user = @user
+  @petal = Petal.new(@params_json)
+  @petal.flower = @flower
 
-  if @flower.save
-    @flower.to_json
+  if @petal.save
+    @flower.save
+    @petal.to_json
   else
-    raise "Error creating flower object"
+    raise "Error creating petal object"
   end
 end
 
-# READ: Route to show a specific Petal based on its `id`
+# READ: Route to show a specific Flower based on its `id`
 get '/flowers/:id' do
-  content_type :json
-  @flower = Flower.get(params[:id].to_i)
+  @flower = Flower.get(params[:id])
 
   if @flower
     @flower.to_json
@@ -49,7 +51,6 @@ end
 
 # UPDATE: Route to update a Petal
 put '/flowers/:id' do
-  content_type :json
 
   # These next commented lines are for if you are using Backbone.js
   # JSON is sent in the body of the http request. We need to parse the body
@@ -59,33 +60,31 @@ put '/flowers/:id' do
   # If you are using jQuery's ajax functions, the data goes through in the
   # params.
 
-  @flower = Petal.get(params[:id].to_i)
+  @flower = Flower.find(params[:id])
   @flower.update(params)
 
   if @flower.save
     @flower.to_json
   else
-    halt 500
+    raise "Error updating flower"
   end
 end
 
-# DELETE: Route to delete a Petal
+# DELETE: Route to delete a Flower
 delete '/flowers/:id/delete' do
   content_type :json
-  @flower = Petal.get(params[:id].to_i)
+  @flower = Flower.get(params[:id])
+
+  if @flower.nil?
+    raise "Flower not found"
+  end
+
+  @flower.petals.each { |p| p.destroy }
 
   if @flower.destroy
     {:success => "ok"}.to_json
   else
-    halt 500
+    raise "Error deleting flower"
   end
 end
-
-# If there are no Petals in the database, add a few.
-#if Petal.count == 0
-  #Petal.create(:title => "Test Petal One", :description => "Sometimes I eat pizza.")
-  #Petal.create(:title => "Test Petal Two", :description => "Other times I eat cookies.")
-#end
-
-#Petal.create(
 
