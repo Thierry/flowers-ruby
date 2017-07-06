@@ -12,7 +12,7 @@ class FlowerApp < Sinatra::Base
 
   # UPDATE: Route to update a Petal
   put '/petals/:id' do
-    update(Petal, params[:id], request.params)
+    Petal.maj(params[:id], request.params).to_json
   end
 
   # DELETE: Route to delete a Petal

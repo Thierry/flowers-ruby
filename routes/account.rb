@@ -1,5 +1,9 @@
 class FlowerApp < Sinatra::Base
   put '/accounts/:id' do
-    update(Account, params[:id], request.params)
+    Account.maj(params[:id], request.params)
+  end
+
+  get '/accounts/:id' do
+    Account.get!(params[:id]).to_json
   end
 end

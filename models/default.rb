@@ -1,4 +1,4 @@
-module Updater
+class BaseModel
   def update_attributes(attributes)
     attributes.each {|attribute, value| self.write_attribute(attribute, value)}
     if self.new_record # if never saved save.
@@ -10,19 +10,20 @@ module Updater
         end
       end
     end
+    self
   end
-end
-class BaseModel
-  include Updater
+
+  def self.get!(id)
+    self.find(id) or raise "Can't find object"
+  end
 
   def self.get(id)
-    puts "call to selfget with id #{id}"
     self.find(id)
   end
 
-  def get(id)
-    puts "call to get with id #{id}"
-    self.find(id)
+  def self.maj(id,params)
+    obj = self.get(id) or raise "Cannot find object"
+    obj.maj(params)
   end
 
   def maj(params)

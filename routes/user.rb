@@ -29,15 +29,7 @@ class FlowerApp < Sinatra::Base
   end
 
   put '/users/:id' do
-
-    @user = User.find(params[:id])
-    @user.update_attributes(request.params)
-
-    if @user.save
-      @user.to_json
-    else
-      raise "Error updating user"
-    end
+    User.maj(params[:id], request.params).to_json
   end
   #
   # Route to show all user flowers

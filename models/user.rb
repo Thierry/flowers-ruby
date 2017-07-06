@@ -1,6 +1,5 @@
-class User
+class User < BaseModel
   include Dynamoid::Document  
-  include Updater
   has_many :flowers
 
   field :name

@@ -1,39 +1,39 @@
 class FlowerApp < Sinatra::Base
   # Route to show all user flowers
-  get '/flowers/:flowerid' do
-    @flower = Flower.get(params[:flowerid])
+  get '/flowers/:id' do
+    @flower = Flower.get(params[:id])
 
     raise "Flower not found" if @flower.nil?
     @flower.to_json
   end
   
   # UPDATE: Route to update a Petal
-  put '/flowers/:flowerid' do
-    update(Flower, params[:flowerid], request.params)
+  put '/flowers/:id' do
+    Flower.maj(params[:id], request.params).to_json
   end
 
   # Route to show all petals for a flower
-  get '/flowers/:flowerid/petals' do
-    @flower = Flower.find(params[:flowerid])
+  get '/flowers/:id/petals' do
+    @flower = Flower.find(params[:id])
 
     raise "Flower not found" if @flower.nil?
     @flower.petals.to_json
   end
 
   # Route to show all accounts for a flower
-  get '/flowers/:flowerid/accounts' do
-    @flower = Flower.find(params[:flowerid])
+  get '/flowers/:id/accounts' do
+    @flower = Flower.find(params[:id])
 
     raise "Flower not found" if @flower.nil?
     @flower.accounts.to_json
   end
 
   # CREATE: Route to create a new petal on this flower
-  post '/flowers/:flowerid/petals' do
+  post '/flowers/:id/petals' do
 
     # If you are using jQuery's ajax functions, the data goes through in the
     # params.
-    @flower = Flower.find(params[:flowerid])
+    @flower = Flower.find(params[:id])
     raise "Flower not found" if @flower.nil?
 
     begin
@@ -52,11 +52,11 @@ class FlowerApp < Sinatra::Base
   end
 
   # CREATE: Route to create a new account on this flower
-  post '/flowers/:flowerid/accounts' do
+  post '/flowers/:id/accounts' do
 
     # If you are using jQuery's ajax functions, the data goes through in the
     # params.
-    @flower = Flower.find(params[:flowerid])
+    @flower = Flower.find(params[:id])
     raise "Flower not found" if @flower.nil?
 
     begin
@@ -75,8 +75,8 @@ class FlowerApp < Sinatra::Base
   end
 
   # DELETE: Route to delete a Flower
-  delete '/flowers/:flowerid' do
-    @flower = Flower.find(params[:flowerid])
+  delete '/flowers/:id' do
+    @flower = Flower.find(params[:id])
 
     if @flower.nil?
       raise "Flower not found"
