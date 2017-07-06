@@ -25,7 +25,7 @@ class FlowerApp < Sinatra::Base
     @flower = Flower.find(params[:flowerid])
 
     raise "Flower not found" if @flower.nil?
-    @flower.petals.to_json
+    @flower.petals.sort_by{ |o| o.created_at }.to_json
   end
 
   # Route to show all accounts for a flower

@@ -12,6 +12,7 @@ class Petal
   field :seuil, :number
   field :split_key
   field :execution_date
+  field :transaction_label
 
   has_one :watch_account, :class => Account
   has_many :debit_account, :class => Account
