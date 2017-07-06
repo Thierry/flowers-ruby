@@ -3,8 +3,6 @@ get '/users' do
 end
 
 post '/users' do
-  content_type :json
-  params[:name] ||= "MyName"
   @user = User.new(params)
 
 

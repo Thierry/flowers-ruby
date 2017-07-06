@@ -8,6 +8,7 @@ Bundler.require
 # current directory.
 #DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite://#{Dir.pwd}/development.sqlite")
 
+
 require_relative 'local/local_config.rb'
 require_relative 'models/init'
 #require_relative 'helpers/init'
@@ -17,6 +18,9 @@ Aws.config.update({
   region: 'eu-west-1',
   credentials: Aws::Credentials.new(AWS_ACCESS_KEY, AWS_SECRET_KEY),
 })
+
+
+set :protection, :except => [:json_csrf]
 
 before do
 	content_type 'application/json'

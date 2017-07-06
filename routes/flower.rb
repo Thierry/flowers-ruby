@@ -71,8 +71,7 @@ put '/flowers/:id' do
 end
 
 # DELETE: Route to delete a Flower
-delete '/flowers/:id/delete' do
-  content_type :json
+delete '/flowers/:id' do
   @flower = Flower.get(params[:id])
 
   if @flower.nil?
