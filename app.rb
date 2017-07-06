@@ -20,7 +20,10 @@ Aws.config.update({
 })
 
 
-set :protection, :except => [:json_csrf]
+configure do
+  disable :protection
+end
+#set :protection, :except => [:json_csrf]
 
 before do
 	content_type 'application/json'
