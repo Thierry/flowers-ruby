@@ -3,16 +3,19 @@
 require 'bundler'
 Bundler.require
 
+require 'rack/protection'
+use Rack::Protection::PathTraversal
+
 # Setup DataMapper with a database URL. On Heroku, ENV['DATABASE_URL'] will be
 # set, when working locally this line will fall back to using SQLite in the
 # current directory.
 #DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite://#{Dir.pwd}/development.sqlite")
 
-
 require_relative 'local/local_config.rb'
 require_relative 'models/init'
 #require_relative 'helpers/init'
 require_relative 'routes/init'
+
 
 Aws.config.update({
   region: 'eu-west-1',
