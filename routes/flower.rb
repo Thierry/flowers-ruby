@@ -60,15 +60,16 @@ class FlowerApp < Sinatra::Base
 
     # If you are using jQuery's ajax functions, the data goes through in the
     # params.
+    params.to_json
 
-    @flower = Flower.find(params[:id])
-    @flower.update(params)
+    #@flower = Flower.find(params[:id])
+    #@flower.update(params)
 
-    if @flower.save
-      @flower.to_json
-    else
-      raise "Error updating flower"
-    end
+    #if @flower.save
+    #  @flower.to_json
+    #else
+    #  raise "Error updating flower"
+    #end
   end
 
   # DELETE: Route to delete a Flower
