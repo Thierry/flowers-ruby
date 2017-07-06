@@ -1,7 +1,9 @@
 class FlowerApp < Sinatra::Base
-  get '/accounts' do
-    send_file './public/index.html'
+  put '/accounts/:id' do
+    Account.maj(params[:id], request.params)
   end
 
-
+  get '/accounts/:id' do
+    Account.get!(params[:id]).to_json
+  end
 end

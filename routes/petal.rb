@@ -12,23 +12,7 @@ class FlowerApp < Sinatra::Base
 
   # UPDATE: Route to update a Petal
   put '/petals/:id' do
-
-    # These next commented lines are for if you are using Backbone.js
-    # JSON is sent in the body of the http request. We need to parse the body
-    # from a string into JSON
-    # params_json = JSON.parse(request.body.read)
-
-    # If you are using jQuery's ajax functions, the data goes through in the
-    # params.
-
-    @petal = Petal.find(params[:id])
-    @petal.update_attributes(request.params)
-
-    if @petal.save
-      @petal.to_json
-    else
-      raise "Error updating petal"
-    end
+    Petal.maj(params[:id], request.params).to_json
   end
 
   # DELETE: Route to delete a Petal

@@ -16,7 +16,7 @@ class FlowerApp < Sinatra::Base
 
   require_relative 'local/local_config.rb'
   require_relative 'models/init'
-  #require_relative 'helpers/init'
+  require_relative 'helpers/init'
   require_relative 'routes/init'
 
 
@@ -35,7 +35,7 @@ class FlowerApp < Sinatra::Base
     content_type 'application/json'
   end
 
-  #set :show_exceptions, false
+  set :show_exceptions, false
 
   error do
     content_type :json
