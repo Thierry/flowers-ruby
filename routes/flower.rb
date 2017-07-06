@@ -1,7 +1,7 @@
 class FlowerApp < Sinatra::Base
   # Route to show all user flowers
   get '/flowers/:flowerid' do
-    @flower = Flower.find(params[:flowerid])
+    @flower = Flower.get(params[:flowerid])
 
     raise "Flower not found" if @flower.nil?
     @flower.to_json
@@ -9,15 +9,7 @@ class FlowerApp < Sinatra::Base
   
   # UPDATE: Route to update a Petal
   put '/flowers/:flowerid' do
-
-    @flower = Flower.find(params[:flowerid])
-    @flower.update_attributes(request.params)
-
-    if @flower.save
-      @flower.to_json
-    else
-      raise "Error updating flower"
-    end
+    update(Flower, params[:flowerid], request.params)
   end
 
   # Route to show all petals for a flower

@@ -1,7 +1,5 @@
 class FlowerApp < Sinatra::Base
-  get '/accounts' do
-    send_file './public/index.html'
+  put '/accounts/:id' do
+    update(Account, params[:id], request.params)
   end
-
-
 end

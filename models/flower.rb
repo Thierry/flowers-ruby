@@ -1,7 +1,5 @@
-class Flower
+class Flower < BaseModel
   include Dynamoid::Document 
-  include Updater
-  table :name => :flowers, :key => :id, :read_capacity => 5, :write_capacity => 5
 
   field :label, :string
   field :description, :string
